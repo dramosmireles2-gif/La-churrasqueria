@@ -82,7 +82,7 @@ if (reservationForm) {
     const mensaje = data.get("mensaje") || "Sin mensaje adicional";
 
     const text = [
-      "Hola, quiero solicitar una reservación en La Churrascaria Do Brasil Monterrey.",
+      "Hola, quiero solicitar una reservación en La Churrascaria Do Brasil Culiacán.",
       "",
       `Nombre: ${nombre}`,
       `Teléfono: ${contacto}`,
