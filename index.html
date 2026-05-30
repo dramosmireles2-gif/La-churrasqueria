@@ -242,6 +242,11 @@
       animation: floatCard 5s ease-in-out infinite;
     }
 
+    @media (max-width: 639px) {
+      #promo-track { display: flex; }
+      #promo-track article { min-width: 100%; }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -501,7 +506,8 @@
           </a>
         </div>
 
-        <div class="mt-12 grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <div class="mt-12 relative" id="promo-container">
+          <div class="sm:grid sm:grid-cols-2 sm:gap-6 lg:grid-cols-3" id="promo-track">
           <article class="promo-card reveal group relative overflow-hidden rounded-[2rem] border border-white/8 bg-gradient-to-br from-[#120909] via-[#160b0b] to-[#230c0c] p-5 sm:p-6 lg:p-8 shadow-velvet">
             <div class="absolute inset-0 opacity-20 transition duration-500 group-hover:opacity-30" style="background-image: url('./15.jpg'); background-size: cover; background-position: center;"></div>
             <div class="absolute right-0 top-0 h-40 w-40 rounded-full bg-gold/10 blur-3xl"></div>
@@ -540,7 +546,13 @@
               <p class="mt-6 text-sm font-semibold text-gold/90">Ideal para anunciar activaciones semanales o estacionales.</p>
             </div>
           </article>
-        </div>
+          </div><!-- /promo-track -->
+          <div class="mt-5 flex justify-center gap-2 sm:hidden" id="promo-dots">
+            <button class="h-2 rounded-full transition-all duration-300 bg-gold w-6" data-idx="0" aria-label="Slide 1"></button>
+            <button class="h-2 rounded-full transition-all duration-300 bg-white/30 w-2" data-idx="1" aria-label="Slide 2"></button>
+            <button class="h-2 rounded-full transition-all duration-300 bg-white/30 w-2" data-idx="2" aria-label="Slide 3"></button>
+          </div>
+        </div><!-- /promo-container -->
       </div>
     </section>
 
@@ -623,8 +635,8 @@
           </p>
         </div>
 
-        <div class="mt-12 grid auto-rows-[17rem] gap-5 md:grid-cols-2 xl:grid-cols-4">
-          <article class="gallery-card reveal media-card relative overflow-hidden rounded-[2rem] border border-white/8 shadow-velvet md:col-span-2 xl:row-span-2 xl:auto-rows-fr">
+        <div class="mt-12 grid grid-cols-2 auto-rows-[12rem] sm:auto-rows-[17rem] gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <article class="gallery-card reveal media-card relative overflow-hidden rounded-[2rem] border border-white/8 shadow-velvet col-span-2 md:col-span-2 xl:row-span-2 xl:auto-rows-fr">
             <img src="./10.jpg" alt="Corte premium al fuego" loading="lazy" class="h-full w-full object-cover">
             <div class="absolute inset-x-6 bottom-6 z-10 max-w-md rounded-[1.6rem] border border-white/10 bg-black/45 p-5 backdrop-blur">
               <p class="text-xs uppercase tracking-[0.25em] text-gold/80">Signature cuts</p>
@@ -660,7 +672,7 @@
             </div>
           </article>
 
-          <article class="gallery-card reveal media-card relative overflow-hidden rounded-[2rem] border border-white/8 shadow-velvet md:col-span-2">
+          <article class="gallery-card reveal media-card relative overflow-hidden rounded-[2rem] border border-white/8 shadow-velvet col-span-2 md:col-span-2">
             <img src="./16.jpg" alt="Corte de picaña" loading="lazy" class="h-full w-full object-cover">
             <div class="absolute inset-x-6 bottom-6 z-10 rounded-[1.5rem] border border-white/10 bg-black/45 p-5 backdrop-blur">
               <p class="text-xs uppercase tracking-[0.25em] text-gold/80">Premium finish</p>
@@ -896,5 +908,69 @@
   ></div>
 
   <script src="./script.js"></script>
+  <script>
+  (function () {
+    var container = document.getElementById('promo-container');
+    var track     = document.getElementById('promo-track');
+    var dotsWrap  = document.getElementById('promo-dots');
+    if (!container || !track || !dotsWrap) return;
+    var dots  = dotsWrap.querySelectorAll('button');
+    var cards = track.querySelectorAll('article');
+    var N = cards.length;
+    var cur = 0, timer;
+
+    function goTo(n) {
+      cur = (n + N) % N;
+      if (window.innerWidth < 640) {
+        track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+      }
+      dots.forEach(function (d, i) {
+        var active = i === cur;
+        d.className = 'h-2 rounded-full transition-all duration-300 ' + (active ? 'bg-gold w-6' : 'bg-white/30 w-2');
+      });
+    }
+
+    function startTimer() {
+      clearInterval(timer);
+      timer = setInterval(function () { goTo(cur + 1); }, 4500);
+    }
+
+    function setup() {
+      if (window.innerWidth < 640) {
+        container.style.overflow = 'hidden';
+        track.style.transition   = 'transform 0.5s ease';
+        goTo(cur);
+        startTimer();
+      } else {
+        clearInterval(timer); timer = null;
+        container.style.overflow = '';
+        track.style.transform    = '';
+        track.style.transition   = '';
+      }
+    }
+
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () {
+        goTo(+d.dataset.idx);
+        startTimer();
+      });
+    });
+
+    var sx = 0;
+    track.addEventListener('touchstart', function (e) { sx = e.touches[0].clientX; }, { passive: true });
+    track.addEventListener('touchend', function (e) {
+      var diff = sx - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 48) { goTo(cur + (diff > 0 ? 1 : -1)); startTimer(); }
+    }, { passive: true });
+
+    container.addEventListener('mouseenter', function () { clearInterval(timer); });
+    container.addEventListener('mouseleave', function () {
+      if (window.innerWidth < 640) startTimer();
+    });
+
+    setup();
+    window.addEventListener('resize', setup);
+  })();
+  </script>
 </body>
 </html>
