@@ -242,6 +242,21 @@
       animation: floatCard 5s ease-in-out infinite;
     }
 
+    #mobile-menu {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 0.3s ease, opacity 0.25s ease;
+      overflow: hidden;
+    }
+    #mobile-menu.menu-open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+    }
+    #mobile-menu > nav {
+      min-height: 0;
+    }
+
     @media (max-width: 639px) {
       #promo-container {
         overflow: hidden;
@@ -277,9 +292,9 @@
             alt="La Churrascaria Do Brasil Culiacán"
             class="h-10 w-auto sm:h-12"
           >
-          <div class="hidden sm:block">
-            <p class="font-display text-2xl leading-none text-ivory">La Churrascaria</p>
-            <p class="text-[0.65rem] uppercase tracking-[0.32em] text-gold/70">Culiacán</p>
+          <div>
+            <p class="font-display text-lg leading-none text-ivory sm:text-2xl">La Churrascaria</p>
+            <p class="text-[0.6rem] uppercase tracking-[0.28em] text-gold/70">Culiacán</p>
           </div>
         </a>
 
@@ -324,23 +339,25 @@
 
       <div
         id="mobile-menu"
-        class="mt-3 hidden rounded-3xl border border-white/10 bg-black/85 p-4 backdrop-blur-xl lg:hidden"
+        class="mt-3 rounded-3xl border border-white/10 bg-black/85 p-4 backdrop-blur-xl lg:hidden"
       >
-        <nav class="flex flex-col gap-2 text-sm font-medium text-stone-200/85">
-          <a href="#beneficios" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Beneficios</a>
-          <a href="#promociones" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Promociones</a>
-          <a href="#experiencias" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Experiencias</a>
-          <a href="#galeria" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Galería</a>
-          <a href="#reservaciones" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Reservaciones</a>
-          <a href="#ubicacion" class="rounded-2xl px-3 py-3 transition hover:bg-white/5 hover:text-gold">Ubicación</a>
-          <a
-            href="https://wa.me/526673469404?text=Hola%2C%20quiero%20reservar%20en%20La%20Churrascaria%20Do%20Brasil%20Culiac%C3%A1n."
-            target="_blank"
-            rel="noreferrer"
-            class="mt-2 rounded-2xl bg-gold px-4 py-3 text-center font-bold text-obsidian"
-          >
-            Reservar por WhatsApp
-          </a>
+        <nav class="flex flex-col gap-1 text-sm font-medium text-stone-200/85">
+          <a href="#beneficios" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Beneficios <span class="text-gold/50">→</span></a>
+          <a href="#promociones" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Promociones <span class="text-gold/50">→</span></a>
+          <a href="#experiencias" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Experiencias <span class="text-gold/50">→</span></a>
+          <a href="#galeria" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Galería <span class="text-gold/50">→</span></a>
+          <a href="#reservaciones" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Reservaciones <span class="text-gold/50">→</span></a>
+          <a href="#ubicacion" class="flex items-center justify-between rounded-2xl px-3 py-2.5 transition hover:bg-white/5 hover:text-gold">Ubicación <span class="text-gold/50">→</span></a>
+          <div class="mt-2 border-t border-white/8 pt-2">
+            <a
+              href="https://wa.me/526673469404?text=Hola%2C%20quiero%20reservar%20en%20La%20Churrascaria%20Do%20Brasil%20Culiac%C3%A1n."
+              target="_blank"
+              rel="noreferrer"
+              class="flex items-center justify-center gap-2 rounded-2xl bg-gold px-4 py-3 font-bold text-obsidian"
+            >
+              Reservar por WhatsApp
+            </a>
+          </div>
         </nav>
       </div>
     </div>
