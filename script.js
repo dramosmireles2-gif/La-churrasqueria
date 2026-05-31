@@ -33,12 +33,12 @@ if (menuToggle && mobileMenu) {
   menuToggle.addEventListener("click", () => {
     const expanded = menuToggle.getAttribute("aria-expanded") === "true";
     menuToggle.setAttribute("aria-expanded", String(!expanded));
-    mobileMenu.classList.toggle("hidden");
+    mobileMenu.classList.toggle("menu-open");
   });
 
   mobileMenu.querySelectorAll("a").forEach((link) => {
     link.addEventListener("click", () => {
-      mobileMenu.classList.add("hidden");
+      mobileMenu.classList.remove("menu-open");
       menuToggle.setAttribute("aria-expanded", "false");
     });
   });
